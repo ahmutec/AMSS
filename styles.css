@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -32,38 +32,47 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
   position: relative;
-}
-
-p {
-  font-weight: bold;
-  color: #333;
+  padding-top: 60px; /* Space for fixed navbar */
 }
 
 /* ============================================
-   ACCESSIBILITY & UTILITY
+   NAVBAR STYLES
    ============================================ */
-.sr-only {
+.navbar {
+  background-color: rgb(17, 168, 84) !important;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1050;
+  height: 60px;
+}
+
+.navbar-toggler {
+  border: 2px solid white;
+  padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-collapse {
+  background-color: rgb(17, 168, 84);
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
 }
 
 /* ============================================
-   LOGO CONTAINER (Responsive & Accessible)
+   LOGO CONTAINER
    ============================================ */
 .logo-container {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 3000;
-  width: clamp(60px, 8vw, 100px);
-  height: clamp(60px, 8vw, 100px);
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgb(196, 209, 202);
   border: 3px solid rgb(250, 250, 250);
@@ -73,6 +82,8 @@ p {
   justify-content: center;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1051;
 }
 
 .logo-container:hover {
@@ -99,97 +110,26 @@ p {
   justify-content: center;
   color: #1b5e20;
   font-weight: bold;
-  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+  font-size: 0.7rem;
   text-align: center;
   padding: 5px;
   background: white;
 }
 
 .logo-placeholder i {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: 1.5rem;
   margin-bottom: 5px;
   color: #1b5e20;
 }
 
 /* ============================================
-   MOBILE HAMBURGER MENU - FIXED
+   MOBILE NAVIGATION MENU
    ============================================ */
-#mobile-menu-toggle {
-  display: none;
-}
-
-.mobile-menu-icon {
-  display: none;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 30px;
-  height: 24px;
-  z-index: 4000;
-  cursor: pointer;
-  flex-direction: column;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 8px 5px;
-  border-radius: 4px;
-}
-
-.mobile-menu-icon span {
-  display: block;
-  width: 100%;
-  height: 3px;
-  background-color: white;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-#mobile-menu-toggle:checked ~ .mobile-menu-icon span:nth-child(1) {
-  transform: translateY(10px) rotate(45deg);
-}
-
-#mobile-menu-toggle:checked ~ .mobile-menu-icon span:nth-child(2) {
-  opacity: 0;
-}
-
-#mobile-menu-toggle:checked ~ .mobile-menu-icon span:nth-child(3) {
-  transform: translateY(-10px) rotate(-45deg);
-}
-
-.mobile-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.95);
-  z-index: 3500;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 70px 15px 20px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  display: block !important; /* Force display block */
-}
-
-#mobile-menu-toggle:checked ~ .mobile-nav {
-  opacity: 1;
-  visibility: visible;
-}
-
 .mobile-nav-content {
+  width: 100%;
   background: rgb(17, 168, 84);
-  max-width: 400px;
-  margin: 0 auto;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transform: translateY(-20px);
-  transition: transform 0.3s ease;
-}
-
-#mobile-menu-toggle:checked ~ .mobile-nav .mobile-nav-content {
-  transform: translateY(0);
 }
 
 .mobile-nav-header {
@@ -199,6 +139,7 @@ p {
   display: flex;
   align-items: center;
   gap: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .mobile-nav-header i {
@@ -230,6 +171,10 @@ p {
   text-align: left;
 }
 
+.mobile-nav-title:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .mobile-nav-title i:first-child {
   margin-right: 10px;
 }
@@ -243,14 +188,8 @@ p {
 }
 
 .mobile-nav-dropdown {
-  background: rgba(33, 150, 243, 0.95);
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.mobile-nav-dropdown.active {
-  max-height: 500px;
+  background: rgba(33, 150, 243, 0.95) !important;
+  border-radius: 0 !important;
 }
 
 .mobile-nav-dropdown a {
@@ -274,50 +213,7 @@ p {
 }
 
 /* ============================================
-   HEADER SECTION
-   ============================================ */
-header {
-  position: relative;
-  width: 100%;
-  background-color: rgb(17, 168, 84);
-  padding: 0.8rem 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  height: auto;
-}
-
-.header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.header-top {
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-.marquee-container {
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 10px;
-  padding: 0.3rem;
-  margin: 0.3rem auto;
-  overflow: hidden;
-  border: 2px solid #ff9800;
-  max-width: 95%;
-}
-
-marquee {
-  font-size: clamp(0.8rem, 2.5vw, 1.2rem);
-  color: #ffeb3b;
-  font-weight: bold;
-}
-
-/* ============================================
-   BUTTON CONTAINER & BUTTONS
+   DESKTOP BUTTON CONTAINER
    ============================================ */
 .button-container {
   display: flex;
@@ -325,7 +221,7 @@ marquee {
   flex-wrap: wrap;
   gap: 0.5rem;
   width: 100%;
-  margin-top: 0.2rem;
+  margin-left: 60px;
 }
 
 .btn-wrapper {
@@ -339,7 +235,7 @@ marquee {
   padding: 0.8rem 1.2rem;
   border: none;
   border-radius: 8px;
-  font-size: clamp(0.7rem, 1.8vw, 0.95rem);
+  font-size: 0.9rem;
   cursor: pointer;
   font-weight: bold;
   min-width: 140px;
@@ -402,7 +298,6 @@ marquee {
   transform: translateY(0);
 }
 
-/* Mobile active state for dropdowns */
 .btn-wrapper.active .dropdown-buttons {
   opacity: 1;
   visibility: visible;
@@ -437,6 +332,25 @@ marquee {
 }
 
 /* ============================================
+   MARQUEE CONTAINER
+   ============================================ */
+.marquee-container {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 0.3rem;
+  margin: 0.3rem auto;
+  overflow: hidden;
+  border: 2px solid #ff9800;
+  max-width: 95%;
+}
+
+marquee {
+  font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+  color: #ffeb3b;
+  font-weight: bold;
+}
+
+/* ============================================
    HERO SECTION
    ============================================ */
 .hero {
@@ -447,12 +361,10 @@ marquee {
   align-items: center;
   text-align: center;
   min-height: auto;
-  height: auto;
   border-radius: 10px;
   margin: 0.5rem auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 1200px;
-  width: calc(100% - 2rem);
+  width: 100%;
 }
 
 .hero-content {
@@ -482,30 +394,18 @@ marquee {
 }
 
 /* ============================================
-   MAIN CONTENT
-   ============================================ */
-main {
-  flex: 1;
-  padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* ============================================
    CLOCK
    ============================================ */
 .clock {
   position: fixed;
   font-family: 'Share Tech Mono', monospace;
-  width: clamp(60px, 7vw, 80px);
-  height: clamp(60px, 7vw, 80px);
+  width: 60px;
+  height: 60px;
   border: 4px solid #ff9800;
   border-radius: 50%;
   background: rgba(1, 9, 1, 0.9);
-  top: 10px;
-  right: 10px;
+  top: 70px;
+  right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -517,7 +417,7 @@ main {
 
 .time {
   font-family: 'Orbitron', Arial, sans-serif;
-  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  font-size: 0.7rem;
   font-weight: 700;
   text-align: center;
   letter-spacing: 0.05em;
@@ -530,7 +430,7 @@ footer {
   background: rgb(17, 90, 40);
   color: rgb(246, 242, 242);
   text-align: center;
-  padding: clamp(0.2rem, 1.2vw, 0.2rem);
+  padding: 1rem 0;
   margin-top: auto;
   border-top: 3px solid #b91649;
   width: 100%;
@@ -539,7 +439,6 @@ footer {
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 0.5rem;
 }
 
 footer p {
@@ -581,91 +480,46 @@ footer p {
 }
 
 /* ============================================
-   LINKS
-   ============================================ */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-/* ============================================
-   RESPONSIVE BREAKPOINTS
+   RESPONSIVE STYLES
    ============================================ */
 
-/* Large Tablets & Small Laptops (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .logo-container {
-    width: clamp(70px, 7vw, 90px);
-    height: clamp(70px, 7vw, 90px);
-  }
-  
-  .header-content {
-    padding-left: clamp(100px, 12vw, 140px);
-    padding-right: 1rem;
-  }
-  
-  .main-btn {
-    padding: 0.7rem 1rem;
-    font-size: 0.85rem;
-    min-width: 120px;
-  }
-  
-  .hero-content {
-    padding: 1.5rem;
-  }
-  
-  .clock {
-    width: clamp(55px, 6vw, 65px);
-    height: clamp(55px, 6vw, 65px);
-  }
-}
-
-/* Tablets (601px - 768px) */
+/* Medium devices (tablets, 768px and up) */
 @media (max-width: 768px) {
-  .mobile-menu-icon {
-    display: flex;
-  }
-  
-  .mobile-nav {
-    display: block;
+  body {
+    padding-top: 60px;
   }
   
   .button-container {
-    display: none; /* Hide desktop buttons on mobile */
+    display: none !important;
   }
   
   .logo-container {
-    width: 60px;
-    height: 60px;
-    top: 10px;
-    left: 10px;
-  }
-  
-  .header-content {
-    padding: 0 1rem;
-    margin-top: 60px;
-  }
-  
-  .marquee-container {
-    margin-top: 10px;
-    width: calc(100% - 20px);
-  }
-  
-  .hero {
-    margin: 1rem auto;
-    margin-top: 20px;
-    width: calc(100% - 2rem);
+    width: 45px;
+    height: 45px;
   }
   
   .clock {
     width: 50px;
     height: 50px;
-    top: 15px;
-    right: 60px;
+    top: 65px;
+    right: 10px;
+  }
+  
+  .hero {
+    margin-top: 1rem;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  .mobile-nav-title {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-nav-dropdown a {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.85rem;
   }
   
   .hero-content {
@@ -677,105 +531,33 @@ a:hover {
   }
   
   .hero p {
-    font-size: 0.95rem;
-  }
-  
-  .contact-info {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-/* Mobile Devices (480px - 600px) */
-@media (max-width: 600px) {
-  .logo-container {
-    width: 50px;
-    height: 50px;
-    top: 8px;
-    left: 8px;
-  }
-  
-  .logo-placeholder span {
-    font-size: 0.7rem;
-  }
-  
-  .logo-placeholder i {
-    font-size: 1.2rem;
-  }
-  
-  .mobile-menu-icon {
-    width: 25px;
-    height: 20px;
-    top: 15px;
-    right: 15px;
+    font-size: 0.9rem;
   }
   
   .clock {
     width: 45px;
     height: 45px;
-    top: 10px;
-    right: 50px;
-  }
-  
-  .mobile-nav-content {
-    max-width: 95%;
-    margin: 0 2.5%;
-  }
-  
-  .mobile-nav-title {
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .mobile-nav-dropdown a {
-    padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-  }
-  
-  .marquee-container {
-    padding: 0.2rem;
-  }
-  
-  marquee {
-    font-size: 0.9rem;
-  }
-  
-  .hero-content {
-    padding: 0.8rem;
-  }
-  
-  .hero h2 {
-    font-size: 1.1rem;
-  }
-  
-  .hero p {
-    font-size: 0.85rem;
-  }
-}
-
-/* Small Mobile Devices (up to 479px) */
-@media (max-width: 479px) {
-  .logo-container {
-    width: 45px;
-    height: 45px;
-    top: 6px;
-    left: 6px;
-  }
-  
-  .mobile-menu-icon {
-    top: 12px;
-    right: 12px;
-  }
-  
-  .clock {
-    width: 40px;
-    height: 40px;
-    top: 8px;
-    right: 45px;
+    top: 60px;
   }
   
   .time {
     font-size: 0.6rem;
+  }
+}
+
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 480px) {
+  .logo-container {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logo-placeholder span {
+    font-size: 0.6rem;
+  }
+  
+  .logo-placeholder i {
+    font-size: 1rem;
   }
   
   .mobile-nav-header {
@@ -788,20 +570,61 @@ a:hover {
   
   .mobile-nav-title {
     font-size: 0.85rem;
+    padding: 0.8rem 1rem;
   }
   
-  .marquee-container {
-    margin-top: 15px;
+  .clock {
+    width: 40px;
+    height: 40px;
+    top: 55px;
   }
   
-  marquee {
+  .time {
+    font-size: 0.55rem;
+  }
+  
+  .contact-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: none !important;
+  }
+  
+  .button-container {
+    margin-left: 70px;
+  }
+  
+  .logo-container {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .clock {
+    width: 70px;
+    height: 70px;
+    top: 15px;
+    right: 20px;
+  }
+  
+  .time {
     font-size: 0.8rem;
   }
-  
-  .hero {
-    padding: 0.8rem;
-    margin: 0.8rem auto;
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .button-container {
+    gap: 1rem;
   }
   
-  .hero-content {
-    padding: 0.
+  .main-btn {
+    min-width: 160px;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}
