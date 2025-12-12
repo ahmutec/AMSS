@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>Ahmu-CCA</title>
+</head>
+<body>
+  <!-- Logo Container -->
+
+  <div class="logo-container">
+    <img src="logo.png" alt="Awolia College Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
+    <div class="logo-placeholder" id="logo-placeholder" style="display: none;">
+      <i class="fas fa-university"></i>
+      <span>Awolia College</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <div class="header-top">
+       
+       <!--<p class="header-tagline">Empowering Education, Inspiring Futures</p> -->
+      </div>
+      
+      <div class="button-container">
+        <!-- Diploma Programs Button -->
+        <div class="btn-wrapper">
+          <button class="main-btn">
+            <i class="fas fa-graduation-cap"></i>
+            Diploma(R) Programs
+          </button>
+          <div class="dropdown-buttons">
+            <a href="DipR.html">
+              <button class="dropdown-btn">
+                <i class="fas fa-user-graduate"></i>
+                Level-I
+              </button>
+            </a>
+            <a href="dipw.html">
+              <button class="dropdown-btn">
+                <i class="fas fa-user-tie"></i>
+                 Level-II
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <!-- Diploma(Extension) Programs Button -->
+        <div class="btn-wrapper">
+          <button class="main-btn">
+            <i class="fas fa-graduation-cap"></i>
+            Diploma(Extension) Programs
+          </button>
+          <div class="dropdown-buttons">
+            <a href="DipR.html">
+              <button class="dropdown-btn">
+                <i class="fas fa-user-graduate"></i>
+                Level-I
+              </button>
+            </a>
+            <a href="dipw.html">
+              <button class="dropdown-btn">
+                <i class="fas fa-user-tie"></i>
+                 Level-II
+              </button>
+            </a>
+            <a href="#">
+              <button class="dropdown-btn">
+                <i class="fas fa-book-open"></i>
+                 Level-III
+              </button>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Degree Programs Button -->
+        <div class="btn-wrapper">
+          <button class="main-btn">
+            <i class="fas fa-university"></i>
+            Degree(R) Programs
+          </button>
+          <div class="dropdown-buttons">
+            <a href="deg.html">
+              <button class="dropdown-btn">
+                <i class="fas fa-user-graduate"></i>
+                Year-I
+              </button>
+            </a>
+            <a href="#">
+              <button class="dropdown-btn">
+                <i class="fas fa-user-tie"></i>
+                 Year-II
+              </button>
+            </a>
+            <a href="#">
+              <button class="dropdown-btn">
+                <i class="fas fa-book"></i>
+                 Year-III
+              </button>
+            </a>
+             <a href="#">
+              <button class="dropdown-btn">
+                <i class="fas fa-book"></i>
+                 Year-IV
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div> 
+    
+  </header>
+ <div class="marquee-container">
+        <marquee behavior="scroll" direction="left">
+           <h1>WELCOME TO AWOLIA COLLEGE CCA ONLINE PORTAL</h1>
+          </marquee>
+     
+        </div>
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Arabic Language & Literature Portal</h2>
+      <p>This portal provides access to all Class Room Assessments including Assignment, project work, Class activity, mid-exams, final-exams and total scores calculated from 100%.</p>
+    </div>
+  </section>
+
+  <main>
+    <!-- Main content will go here for other pages -->
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© 2025 Ahmu-tec | Designed for Excellence</p>
+      <div class="contact-info">
+        <p><i class="fas fa-phone"></i> Phone: +251 912 66 87 87</p>
+        <p><i class="fas fa-envelope"></i> Email: abuhanifa0915@gmail.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="clock">
+    <div class="time" id="time"></div>
+  </div>
+
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let seconds = now.getSeconds();
+      const period = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12;
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      const timeString = `${hours}<span class="colon">:</span>${minutes}<span class="colon">:</span>${seconds} ${period}`;
+      document.getElementById("time").innerHTML = timeString;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    // For mobile devices, toggle dropdown on click
+    document.addEventListener('DOMContentLoaded', function() {
+      const btnWrappers = document.querySelectorAll('.btn-wrapper');
+      
+      // Check if we're on a mobile device
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        btnWrappers.forEach(wrapper => {
+          const mainBtn = wrapper.querySelector('.main-btn');
+          
+          mainBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close other open dropdowns
+            btnWrappers.forEach(otherWrapper => {
+              if (otherWrapper !== wrapper && otherWrapper.classList.contains('active')) {
+                otherWrapper.classList.remove('active');
+              }
+            });
+            
+            // Toggle current dropdown
+            wrapper.classList.toggle('active');
+          });
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+          btnWrappers.forEach(wrapper => {
+            wrapper.classList.remove('active');
+          });
+        });
+      }
+      
+      // Check if logo image exists
+      const logoImg = document.querySelector('.logo-img');
+      const logoPlaceholder = document.getElementById('logo-placeholder');
+      
+      // If logo doesn't exist, show placeholder
+      logoImg.onerror = function() {
+        logoImg.style.display = 'none';
+        logoPlaceholder.style.display = 'flex';
+      };
+      
+      // Check if logo loads successfully
+      logoImg.onload = function() {
+        logoPlaceholder.style.display = 'none';
+        this.style.display = 'block';
+      };
+    });
+  </script>
+ 
+</body>
+</html>
