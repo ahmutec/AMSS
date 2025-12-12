@@ -3,217 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
-  <title>Ahmu-CCA | Awolia College</title>
+  <title>Ahmu-CCA</title>
 </head>
 <body>
-  <!-- Navbar for Mobile & Desktop -->
-  <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container-fluid">
-      <!-- Logo -->
-      <div class="logo-container">
-        <img src="logo.png" alt="Awolia College Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
-        <div class="logo-placeholder" id="logo-placeholder" style="display: none;">
-          <i class="fas fa-university"></i>
-          <span>Awolia College</span>
-        </div>
+  <!-- Logo Container -->
+
+  <div class="logo-container">
+    <img src="logo.png" alt="Awolia College Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex';">
+    <div class="logo-placeholder" id="logo-placeholder" style="display: none;">
+      <i class="fas fa-university"></i>
+      <span>Awolia College</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <div class="header-top">
+       
+       <!--<p class="header-tagline">Empowering Education, Inspiring Futures</p> -->
       </div>
-
-      <!-- Mobile Hamburger Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Desktop Buttons Container (visible on large screens) -->
-      <div class="button-container d-none d-lg-flex">
+      
+      <div class="button-container">
+        <!-- Diploma Programs Button -->
         <div class="btn-wrapper">
           <button class="main-btn">
             <i class="fas fa-graduation-cap"></i>
-            <span class="btn-text">Diploma(R) Programs</span>
+            Diploma(R) Programs
           </button>
           <div class="dropdown-buttons">
             <a href="DipR.html">
               <button class="dropdown-btn">
                 <i class="fas fa-user-graduate"></i>
-                <span>Level-I</span>
+                Level-I
               </button>
             </a>
             <a href="dipw.html">
               <button class="dropdown-btn">
                 <i class="fas fa-user-tie"></i>
-                <span>Level-II</span>
+                 Level-II
               </button>
             </a>
           </div>
         </div>
 
+        <!-- Diploma(Extension) Programs Button -->
         <div class="btn-wrapper">
           <button class="main-btn">
             <i class="fas fa-graduation-cap"></i>
-            <span class="btn-text">Diploma(Extension) Programs</span>
+            Diploma(Extension) Programs
           </button>
           <div class="dropdown-buttons">
             <a href="DipR.html">
               <button class="dropdown-btn">
                 <i class="fas fa-user-graduate"></i>
-                <span>Level-I</span>
+                Level-I
               </button>
             </a>
             <a href="dipw.html">
               <button class="dropdown-btn">
                 <i class="fas fa-user-tie"></i>
-                <span>Level-II</span>
+                 Level-II
               </button>
             </a>
             <a href="#">
               <button class="dropdown-btn">
                 <i class="fas fa-book-open"></i>
-                <span>Level-III</span>
+                 Level-III
               </button>
             </a>
           </div>
         </div>
         
+        <!-- Degree Programs Button -->
         <div class="btn-wrapper">
           <button class="main-btn">
             <i class="fas fa-university"></i>
-            <span class="btn-text">Degree(R) Programs</span>
+            Degree(R) Programs
           </button>
           <div class="dropdown-buttons">
             <a href="deg.html">
               <button class="dropdown-btn">
                 <i class="fas fa-user-graduate"></i>
-                <span>Year-I</span>
-              </button>
-            </a>
-            <a href="#">
-              <button class="dropdown-btn">
-                <i class="fas fa-user-tie"></i>
-                <span>Year-II</span>
-              </button>
-            </a>
-            <a href="#">
-              <button class="dropdown-btn">
-                <i class="fas fa-book"></i>
-                <span>Year-III</span>
-              </button>
-            </a>
-            <a href="#">
-              <button class="dropdown-btn">
-                <i class="fas fa-book"></i>
-                <span>Year-IV</span>
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu (Collapsible) -->
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <div class="mobile-nav-content">
-          <div class="mobile-nav-header">
-            <i class="fas fa-university"></i>
-            <h3>Programs Menu</h3>
-          </div>
-          
-          <div class="mobile-nav-section">
-            <a class="mobile-nav-title" data-bs-toggle="collapse" href="#diploma-r" role="button" aria-expanded="false" aria-controls="diploma-r">
-              <i class="fas fa-graduation-cap"></i>
-              Diploma(R) Programs
-              <i class="fas fa-chevron-down"></i>
-            </a>
-            <div class="collapse mobile-nav-dropdown" id="diploma-r">
-              <a href="DipR.html">
-                <i class="fas fa-user-graduate"></i>
-                Level-I
-              </a>
-              <a href="dipw.html">
-                <i class="fas fa-user-tie"></i>
-                Level-II
-              </a>
-            </div>
-          </div>
-          
-          <div class="mobile-nav-section">
-            <a class="mobile-nav-title" data-bs-toggle="collapse" href="#diploma-ext" role="button" aria-expanded="false" aria-controls="diploma-ext">
-              <i class="fas fa-graduation-cap"></i>
-              Diploma(Extension) Programs
-              <i class="fas fa-chevron-down"></i>
-            </a>
-            <div class="collapse mobile-nav-dropdown" id="diploma-ext">
-              <a href="DipR.html">
-                <i class="fas fa-user-graduate"></i>
-                Level-I
-              </a>
-              <a href="dipw.html">
-                <i class="fas fa-user-tie"></i>
-                Level-II
-              </a>
-              <a href="#">
-                <i class="fas fa-book-open"></i>
-                Level-III
-              </a>
-            </div>
-          </div>
-          
-          <div class="mobile-nav-section">
-            <a class="mobile-nav-title" data-bs-toggle="collapse" href="#degree" role="button" aria-expanded="false" aria-controls="degree">
-              <i class="fas fa-university"></i>
-              Degree(R) Programs
-              <i class="fas fa-chevron-down"></i>
-            </a>
-            <div class="collapse mobile-nav-dropdown" id="degree">
-              <a href="deg.html">
-                <i class="fas fa-user-graduate"></i>
                 Year-I
-              </a>
-              <a href="#">
+              </button>
+            </a>
+            <a href="#">
+              <button class="dropdown-btn">
                 <i class="fas fa-user-tie"></i>
-                Year-II
-              </a>
-              <a href="#">
+                 Year-II
+              </button>
+            </a>
+            <a href="#">
+              <button class="dropdown-btn">
                 <i class="fas fa-book"></i>
-                Year-III
-              </a>
-              <a href="#">
+                 Year-III
+              </button>
+            </a>
+             <a href="#">
+              <button class="dropdown-btn">
                 <i class="fas fa-book"></i>
-                Year-IV
-              </a>
-            </div>
+                 Year-IV
+              </button>
+            </a>
           </div>
         </div>
       </div>
-    </div>
-  </nav>
-
-  <!-- Header Content -->
-  <header class="mt-5 pt-4">
-    <div class="container">
-      <div class="marquee-container my-3">
-        <marquee behavior="scroll" direction="left">
-          <h1 class="mb-0">WELCOME TO AWOLIA COLLEGE CCA ONLINE PORTAL</h1>
-        </marquee>
-      </div>
-      
-      <section class="hero">
-        <div class="hero-content">
-          <h2>Arabic Language & Literature Portal</h2>
-          <p>This portal provides access to all Class Room Assessments including Assignment, project work, Class activity, mid-exams, final-exams and total scores calculated from 100%.</p>
-        </div>
-      </section>
-    </div>
+    </div> 
+    
   </header>
+ <div class="marquee-container">
+        <marquee behavior="scroll" direction="left">
+           <h1>WELCOME TO AWOLIA COLLEGE CCA ONLINE PORTAL</h1>
+          </marquee>
+     
+        </div>
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Arabic Language & Literature Portal</h2>
+      <p>This portal provides access to all Class Room Assessments including Assignment, project work, Class activity, mid-exams, final-exams and total scores calculated from 100%.</p>
+    </div>
+  </section>
 
-  <main class="container my-4">
+  <main>
     <!-- Main content will go here for other pages -->
   </main>
 
   <footer>
-    <div class="footer-content container">
+    <div class="footer-content">
       <p>© 2025 Ahmu-tec | Designed for Excellence</p>
       <div class="contact-info">
         <p><i class="fas fa-phone"></i> Phone: +251 912 66 87 87</p>
@@ -226,11 +144,8 @@
     <div class="time" id="time"></div>
   </div>
 
-  <!-- Bootstrap 5 JS Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <script>
-    // Update clock function
     function updateClock() {
       const now = new Date();
       let hours = now.getHours();
@@ -244,107 +159,61 @@
       const timeString = `${hours}<span class="colon">:</span>${minutes}<span class="colon">:</span>${seconds} ${period}`;
       document.getElementById("time").innerHTML = timeString;
     }
-    
-    // Initialize clock
     updateClock();
     setInterval(updateClock, 1000);
     
-    // DOM Ready
+    // For mobile devices, toggle dropdown on click
     document.addEventListener('DOMContentLoaded', function() {
-      // Logo handling
-      const logoImg = document.querySelector('.logo-img');
-      const logoPlaceholder = document.getElementById('logo-placeholder');
-      
-      if (logoImg) {
-        logoImg.onerror = function() {
-          this.style.display = 'none';
-          if (logoPlaceholder) logoPlaceholder.style.display = 'flex';
-        };
-        
-        logoImg.onload = function() {
-          if (logoPlaceholder) logoPlaceholder.style.display = 'none';
-          this.style.display = 'block';
-        };
-      }
-      
-      // Desktop dropdown handling
       const btnWrappers = document.querySelectorAll('.btn-wrapper');
       
-      btnWrappers.forEach(wrapper => {
-        const mainBtn = wrapper.querySelector('.main-btn');
-        
-        if (mainBtn) {
-          mainBtn.addEventListener('mouseenter', function() {
-            if (window.innerWidth > 768) {
-              wrapper.classList.add('active');
-            }
-          });
+      // Check if we're on a mobile device
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        btnWrappers.forEach(wrapper => {
+          const mainBtn = wrapper.querySelector('.main-btn');
           
           mainBtn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-              e.preventDefault();
-              e.stopPropagation();
-              
-              btnWrappers.forEach(otherWrapper => {
-                if (otherWrapper !== wrapper && otherWrapper.classList.contains('active')) {
-                  otherWrapper.classList.remove('active');
-                }
-              });
-              
-              wrapper.classList.toggle('active');
-            }
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close other open dropdowns
+            btnWrappers.forEach(otherWrapper => {
+              if (otherWrapper !== wrapper && otherWrapper.classList.contains('active')) {
+                otherWrapper.classList.remove('active');
+              }
+            });
+            
+            // Toggle current dropdown
+            wrapper.classList.toggle('active');
           });
-          
-          wrapper.addEventListener('mouseleave', function() {
-            if (window.innerWidth > 768) {
-              wrapper.classList.remove('active');
-            }
-          });
-        }
-      });
-      
-      // Close dropdowns when clicking outside on mobile
-      document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768 && !e.target.closest('.btn-wrapper')) {
+        });
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
           btnWrappers.forEach(wrapper => {
             wrapper.classList.remove('active');
           });
-        }
-      });
+        });
+      }
       
-      // Update chevron icons when Bootstrap collapse is shown/hidden
-      document.querySelectorAll('.mobile-nav-title').forEach(title => {
-        title.addEventListener('click', function() {
-          const icon = this.querySelector('.fa-chevron-down');
-          if (icon) {
-            setTimeout(() => {
-              const targetId = this.getAttribute('href') || this.getAttribute('data-bs-target');
-              const target = document.querySelector(targetId);
-              if (target.classList.contains('show')) {
-                icon.classList.add('rotated');
-              } else {
-                icon.classList.remove('rotated');
-              }
-            }, 10);
-          }
-        });
-      });
+      // Check if logo image exists
+      const logoImg = document.querySelector('.logo-img');
+      const logoPlaceholder = document.getElementById('logo-placeholder');
       
-      // Handle Bootstrap collapse events
-      document.querySelectorAll('.mobile-nav-dropdown').forEach(dropdown => {
-        dropdown.addEventListener('show.bs.collapse', function() {
-          const parent = this.closest('.mobile-nav-section');
-          const icon = parent.querySelector('.fa-chevron-down');
-          if (icon) icon.classList.add('rotated');
-        });
-        
-        dropdown.addEventListener('hide.bs.collapse', function() {
-          const parent = this.closest('.mobile-nav-section');
-          const icon = parent.querySelector('.fa-chevron-down');
-          if (icon) icon.classList.remove('rotated');
-        });
-      });
+      // If logo doesn't exist, show placeholder
+      logoImg.onerror = function() {
+        logoImg.style.display = 'none';
+        logoPlaceholder.style.display = 'flex';
+      };
+      
+      // Check if logo loads successfully
+      logoImg.onload = function() {
+        logoPlaceholder.style.display = 'none';
+        this.style.display = 'block';
+      };
     });
   </script>
+ 
 </body>
 </html>
