@@ -1,6 +1,7 @@
 
 /* General Styles */
 * {
+  height: 0;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -18,6 +19,7 @@ body {
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s ease;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 p {
@@ -554,4 +556,5 @@ a {
 a:hover {
   text-decoration: none;
 }
+
 
