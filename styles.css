@@ -280,14 +280,14 @@ marquee {
 } 
 
 /* Main Content */
-/* main {
+ main {
   flex: 1;
   padding: 1rem;
   max-width: 1200px;
   margin: 0 auto;
   width: calc(100% - 140px); /* Adjusted width for logo space */
   margin-left: 140px; /* Added margin for logo space */
-} */
+} 
 /* Main Content */
 main {
   flex: 1; /* Pushes footer to bottom */
@@ -534,6 +534,7 @@ a {
 a:hover {
   text-decoration: none;
 }
+
 
 
 
