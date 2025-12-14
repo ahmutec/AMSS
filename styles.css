@@ -321,35 +321,6 @@ main {
   text-align: center;
   letter-spacing: 0.05em;
 }
-
-/* Clock */
-.clock {
-  position: fixed;
-  font-family: 'Share Tech Mono', monospace;
-  width: clamp(60px, 10vw, 100px);
-  height: clamp(60px, 10vw, 100px);
-  border: 5px solid #34dbf8;
-  border-radius: 50%;
-  background: black;
-  top: 5px;
-  right: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  color: #daf6ff;
-  text-shadow: 0 0 20px rgb(51, 89, 83), 0 0 20px rgba(10, 175, 230, 0);
-  z-index: 2000;
-}
-
-.time {
-  font-family: 'Orbitron', Arial, sans-serif;
-  font-size: clamp(10px, 2vw, 20px);
-  font-weight: 700;
-  text-align: center;
-  letter-spacing: 0.05em;
-}
-
 /* Footer */
 footer {
   background: #1f7d40;
@@ -367,7 +338,7 @@ footer {
 
 footer p {
   font-size: clamp(0.625rem, 2vw, 0.75rem);
-  margin: 0;
+  margin-bottom: 0;
 }
 
 
@@ -474,6 +445,8 @@ footer p {
   
   footer {
     margin-left: 0;
+    margin-bottom:0;
+    
   }
 }
 
