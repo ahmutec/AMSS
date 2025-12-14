@@ -17,7 +17,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  color: #333;
+  transition: background-color 0.3s ease;
 }
 
 p {
@@ -554,3 +554,4 @@ a {
 a:hover {
   text-decoration: none;
 }
+
