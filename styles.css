@@ -133,21 +133,25 @@ body {
 }
 
 .portal-box {
-    font-family: 'Courier New', Courier, monospace;
-  background: #05005c;
-  border-radius: 25px;
-  padding: 20px;
-  max-width: 900px;
-  width: 100%;
-  color: #fff;
-  border: 3px solid red;
-  text-align: center;
+font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+  border: 2px solid red;
+  border-radius: 15px;
+  padding: clamp(0.20rem, 1vw, 0.5rem);
+  margin: clamp(0.1rem, 1.5vw, 0.2rem) auto; 
+  max-width: 90%;
+  background-color: #260a7a;
+  color:rgb(239, 229, 229);
 }
 
-.portal-box h2 {
-  color: #00ff88;
+.portal-title {
+  font-family: Georgia, "Times New Roman", serif;
+  background: rgb(4, 147, 49); 
+ text-align: center;
+  justify-content: center;
+  color: #c61212;
   font-weight: bold;
-  margin-bottom: 15px;
+   
 }
 
 /* ================= FOOTER ================= */
@@ -179,22 +183,20 @@ background: rgb(17, 90, 40); /* dark green as requested */
 /* ===== RESPONSIVE TEXT (MOBILE) ===== */
 @media (max-width: 576px) {
 
-  .portal-box h2 {
-    font-size: 1.2rem;
+  .portal-title {
+    font-size: 1.0rem;
   }
-
-  .portal-box p {
-    font-size: 0.7rem;
-    line-height: 1.1;
-  }
+  
 
   .portal-box {
-    padding: 15px;
+    font-size: clamp(0.625rem, 3vw, 0.75rem);
+    padding: 0.25rem;
+    margin: 0.5rem auto;
   }
-}
+  } 
 
 @media (max-width: 768px) {
-  .portal-box h2 {
+  .portal-title {
     font-size: 1.1rem;
   }
 }
@@ -246,4 +248,7 @@ background: rgb(17, 90, 40); /* dark green as requested */
     display: none;
   }
 }
+
+
+
 
