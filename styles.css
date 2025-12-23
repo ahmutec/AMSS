@@ -145,12 +145,14 @@ font-family: Georgia, "Times New Roman", serif;
 }
 
 .portal-title {
-  font-family: Georgia, "Times New Roman", serif;
-  background: rgb(4, 147, 49); 
- text-align: center;
+ font-family: Georgia, "Times New Roman", serif;
+  background: rgb(145, 249, 178);
+  text-align: center;
   justify-content: center;
-  color: #c61212;
+  color: #1a1908;
   font-weight: bold;
+  padding: 0px;
+  font-size: 40px; /* 📱 small devices */
    
 }
 
@@ -248,6 +250,7 @@ background: rgb(17, 90, 40); /* dark green as requested */
     display: none;
   }
 }
+
 
 
 
