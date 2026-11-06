@@ -292,6 +292,21 @@ background: rgb(17, 90, 40); /* dark green as requested */
 }
 /* ===== Reduce portal-box padding on small devices ===== */
 @media (max-width: 576px) {
+  .clock-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top, #1b5e20, #000);
+  border: 3px solid #ffb300;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255,179,0,0.7);
+}
   .portal-box {
     padding: 8px 10px;  /* smaller padding for phones */
   }
