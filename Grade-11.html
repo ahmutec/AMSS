@@ -1,152 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Awolia Muslim SS Portal</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-   <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://www.creativefabrica.com/wp-content/uploads/2022/11/27/Beautiful-Background-With-Trees-High-Quality-Sharp-Focus-And-Nature-48773128-1.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(173, 216, 230, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            margin: 10px;
+        }
+        h2 { color: #0d47a1; margin-bottom: 0; font-size: 30px; text-align: center; }
+        p {
+            color: white; margin-bottom: 5px; font-size: 15px;
+            background-color: teal; border-radius: 5px; padding: 5px;
+        }
+        .auth-container {
+            margin: 15px auto; background-color: lightblue;
+            width: fit-content; text-align: center; padding: 20px; border-radius: 15px;
+        }
+        .form-group { margin-bottom: 15px; position: relative; }
+        .input-field, select {
+            width: calc(100% - 22px);
+            padding: 10px 40px 10px 10px;
+            border: 1px solid #ccc; border-radius: 15px;
+            box-sizing: border-box; font-size: 16px;
+        }
+        .submit-button {
+            background-color: darkblue; color: white; padding: 10px; border: none;
+            border-radius: 20px; cursor: pointer; font-size: 20px;
+            width: calc(100% - 20px); margin: 10px 0; transition: background-color 0.5s;
+        }
+        .submit-button:hover { background-color: lightgreen; color: yellow; }
+        .toggle-form { color: blue; margin-top: 5px; cursor: pointer; font-size: 15px; text-decoration: none; }
+        .toggle-form:hover { background-color: darkblue; color: lightgreen; border-radius: 15px; }
+        .error-message { color: red; margin-top: 10px; font-size: 14px; display: none; }
+        .password-requirements { color: #666; font-size: 12px; margin-top: 5px; text-align: left; display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 2px ridge #ABC; padding: 8px; text-align: left; }
+        th { background-color: black; color: white; }
+        .mark-highlight { background-color: #ffeb3b; padding: 2px 5px; border-radius: 3px; }
+        #resultContainer { margin-top: 20px; }
+        .back-button {
+            background-color: green; color: white; padding: 10px; border: 2px dotted red;
+            border-radius: 20px; cursor: pointer; font-size: 16px; width: fit-content;
+            float: right; margin: 10px 0; transition: background-color 0.3s;
+        }
+        .back-button:hover { background-color: #ff8866; }
+        .loading { display: none; text-align: center; margin: 10px 0; color: #0d47a1; font-size: 16px; }
+        .spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%;
+            width: 20px; height: 20px; animation: spin 1s linear infinite;
+            display: inline-block; vertical-align: middle; margin-right: 10px;
+        }
+        .password-action-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+        .password-action-button {
+            background-color: #4CAF50; color: white; padding: 8px 15px; border: none;
+            border-radius: 15px; cursor: pointer; font-size: 14px; transition: all 0.3s ease;
+            white-space: nowrap; width: auto; display: inline-block; text-align: center;
+        }
+        .password-action-button:hover { background-color: #45a049; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .password-action-button:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .pwd-wrapper { position: relative; }
+        .pwd-toggle {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: transparent; border: none; cursor: pointer; font-size: 18px;
+            line-height: 1; width: 28px; height: 28px; display: flex;
+            align-items: center; justify-content: center; padding: 0;
+        }
+        .step-info { background-color: #e3f2fd; border-radius: 10px; padding: 10px; margin: 10px 0; font-size: 14px; }
+        .email-note { color: #666; font-size: 12px; margin-top: 5px; text-align: left; font-style: italic; }
+        .tab-bar { display: flex; gap: 6px; flex-wrap: wrap; padding-bottom: 6px; margin-top: 10px; border-bottom: 3px solid #0d47a1; }
+        .tab-btn {
+            background-color: #b3d4f5; color: #0d47a1; border: none; border-radius: 12px 12px 0 0;
+            padding: 8px 16px; font-size: 15px; font-weight: bold; cursor: pointer; flex: 0 0 auto;
+        }
+        .tab-btn:hover { background-color: #90caf9; }
+        .tab-btn.active { background-color: #0d47a1; color: white; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
+<body>
+    <div class="container">
+        <h2>Student Portal</h2>
 
-<body class="grade11">
-
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar navbar-expand-lg top-bar11">
-  <div class="container">
-
-    <!-- Logo -->
-    <a class="navbar-brand" href="#">
-      <img src="logo.jpg" alt="Logo">
-      Grade-11 Student portal 
-    </a>
-
-    <!-- Hamburger -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Menu -->
-     
-    <div class="collapse navbar-collapse justify-content-center" id="mainMenu">
-      <div class="d-flex flex-column flex-lg-row gap-2">
-
-      <div class="dropdown grade-menu">
-          <button class="btn nav-btn ">
-            <a class="tab nav-link active" href="index.html">Home</a>
-          </button>
-   </div>
-        <div class="dropdown grade-menu " >
-          <button class="btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="fas fa-user-tie"></i> Common Course
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbx9PwjTM0bSFyHq6JthZu-JNdnE4cl1AbAH3jpouTtX5rsTDLANErgUDS6K_CjJ1rxj/exec">English</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbySbhx3HhpF0xqYZaG10RCUwJho9nXMvaGwp2X8KPb5S-iLKzsmCk3xgGebjc6fZq0A/exec">Maths</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbz9bAAYhynYNV4jlCBzJsUSVAyMWOqroNpWSSCgJi_zmzfHUfQKtW7JN89FlWMHeQiP8w/exec">IT</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbz1PIOMegGGm5M9s8E0lZ_uKsitSbkZ-igG349MLwG0pa1dDsTdZjRaMaq0gLwSBsb65Q/exec">Arabic</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbwrrrAmEChNsNZePc0D_avOrTuF4i1Gz0LLBBxt9sHimfoXh1nZAbmN-zZ_U5G3j-Nn/exec">Din</a></li>
-         
-            
-          </ul>
+        <!-- Login Form -->
+        <div class="auth-container" id="loginForm">
+            <p style="background-color:Teal; color:white; font-family:Snell Roundhand, cursive; border-radius:15px;">ውድ ተማሪዎች ከስር ባለው መጠይቅ መሰረት የት/ቤት መታወቂያችሁ ላይ ያለውን Student-Code በመጠቀም <b style="background-color:#35495e; color:white; border:solid #35495e 4px; border-radius:5px; padding-right:2px;">Create New Password</b> የምትለዋን button በመጫን የማትረሱትን ቢያንስ ባለ 2 ዲጂት Password Create በማድረግ የሁሉንም ትምህርት ዓይነት ውጤት ማየት የምትችሉ መሆኑን እናሳውቃለን።<br> <b style="background-color:#fffdc1; color:darkred; font-family:sans-serif; border-radius:8px; padding-right:2px;">ለበለጠ መረጃ በዚህ ሊንክ ያናግሩን <a href="https://t.me/Awolia_IT_infobot" target="_blank">👉 @Awolia_IT_infobot</a></b></p>
+            <div class="form-group">
+                <select id="sheetSelector" class="input-field" onchange="updateSheet()"></select>
+            </div>
+            <div class="form-group">
+                <input type="text" id="username" class="input-field" placeholder="Student Code" required>
+            </div>
+            <div class="form-group pwd-wrapper">
+                <input type="password" id="password" class="input-field" placeholder="Password" required>
+                <button type="button" class="pwd-toggle" aria-label="Toggle password" data-target="password">👁️</button>
+            </div>
+            <button onclick="login()" class="submit-button">Submit</button>
+            <div class="loading" id="loginLoading"><span class="spinner"></span>Processing...</div>
+            <div id="loginError" class="error-message"></div>
+            <div class="password-action-buttons">
+                <button class="password-action-button" onclick="showCreatePassword()">Create New Password</button>
+                <button class="password-action-button" onclick="showForgotPassword()">Forgot Password</button>
+            </div>
         </div>
 
-        <div class="dropdown grade-menu">
-          <button class="btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="fas fa-user-tie"></i> Natural
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbwHlImyoE-9e0tGolpHfE7hBPw73IEGtzZOIoyc1uAHGJVcKGktDZw8CPQQN5cJnItz1Q/exec">Physics</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbxzH_SL7aFD0-aQ_CcgLbhcVuq5lhZTWLYQxpD0eOJoAvIi1-rw43NuUfbzGJKNWPC2/exec">Chemistry</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbygpGduQ85L_ky8RGHMYmaGWGzNRwwveBz0KkfvVR5ziGRsZXzehqt37lMRaNOyW1zMeg/exec">Biology</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbxuzh6QNdr463dgsJ5_T7cQNgqxzMNGWS1qZIrZM5IMx0NuegaHa2b_Yblcve_bn2Ui/exec">Agriculture</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbwYSSHK3iSad5-KCKOapvp7p78uFJQnWeI3E13NLYbOMSfxZT-yC26MU5sdw0fWaqZSjA/exec">Web Design</a></li>
-         
-            </ul>
+        <!-- Create Password Form -->
+        <div class="auth-container" id="createPasswordForm" style="display:none">
+            <h3>Create New Password</h3>
+            <p class="email-note">Please provide your email address for password recovery purposes.</p>
+            <div class="form-group">
+                <select id="createSheetSelector" class="input-field"></select>
+            </div>
+            <div class="form-group">
+                <input type="text" id="createUsername" class="input-field" placeholder="Student Code" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="createEmail" class="input-field" placeholder="Email Address (Required for recovery)" required>
+            </div>
+            <div class="form-group pwd-wrapper">
+                <input type="password" id="createPassword" class="input-field" placeholder="New Password" required onfocus="showPasswordRequirements()" onblur="hidePasswordRequirements()">
+                <button type="button" class="pwd-toggle" aria-label="Toggle password" data-target="createPassword">👁️</button>
+            </div>
+            <div id="passwordRequirements" class="password-requirements">
+                Password requirements:<br>
+                - Must be at least 2 characters long<br>
+                - Can be any combination: letters, numbers, or symbols
+            </div>
+            <div class="form-group pwd-wrapper">
+                <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm Password" required>
+                <button type="button" class="pwd-toggle" aria-label="Toggle password" data-target="confirmPassword">👁️</button>
+            </div>
+            <div id="createError" class="error-message"></div>
+            <button onclick="createNewPassword()" class="submit-button">Create Password</button>
+            <div class="loading" id="createPasswordLoading"><span class="spinner"></span>Creating password...</div>
+            <button onclick="showLogin()" class="back-button">Back to Home</button>
         </div>
- <div class="dropdown grade-menu">
-          <button class="btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="fas fa-user-tie"></i> Social
-          </button>
-          <ul class="dropdown-menu">
-             <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbwXwXSgcv0vKaS17IXYkOmkyllXxssbdHwn7yBvBQh0PVP2RiJQJwXuj9wG_7VD7NXN/exec">Geography</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbw9Ffh9_aKjcTIr1Lgh_DmaKOClNwSsJ6FFsSK84aAVofA1wETrRNvkA7gdOiorl9Yz/exec">History</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbztClzIrjRfGScdTp8mY-Il-IColRqtCUMGY26FwO-baRPvn8lPmh9at1GDhXmkhdYkRg/exec">Economics</a></li>
-            <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbzjLU3i6gydsfG_dCiP-apIR8S64rwIsb0clntecgXgNxz21zxeT10ADoQIsyu7kbE69Q/exec">Marketing</a></li>
-         
-            </ul>
+
+        <!-- Forgot Password Form (3-Step Process) -->
+        <div class="auth-container" id="forgotPasswordForm" style="display:none">
+            <h3>Reset Your Password</h3>
+
+            <div id="resetStep1">
+                <div class="step-info">Enter your student code and section to receive a reset code via email.</div>
+                <div class="form-group">
+                    <select id="resetSheetSelector" class="input-field"></select>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="resetUsername" class="input-field" placeholder="Student Code" required>
+                </div>
+                <button onclick="requestResetCode()" class="submit-button">Send Reset Code</button>
+                <div class="loading" id="resetStep1Loading"><span class="spinner"></span>Sending reset code...</div>
+                <div id="resetStep1Error" class="error-message"></div>
+            </div>
+
+            <div id="resetStep2" style="display:none">
+                <div class="step-info" id="resetEmailInfo">A reset code has been sent to your email.</div>
+                <div class="form-group">
+                    <input type="text" id="resetCode" class="input-field" placeholder="6-digit Reset Code" maxlength="6" required>
+                </div>
+                <button onclick="verifyResetCode()" class="submit-button">Verify Code</button>
+                <div class="loading" id="resetStep2Loading"><span class="spinner"></span>Verifying code...</div>
+                <div id="resetStep2Error" class="error-message"></div>
+                <div class="toggle-form" onclick="goBackToStep1()">Back to Request Code</div>
+            </div>
+
+            <div id="resetStep3" style="display:none">
+                <div class="step-info">Enter your new password.</div>
+                <div class="form-group pwd-wrapper">
+                    <input type="password" id="newPassword" class="input-field" placeholder="New Password" required onfocus="showPasswordRequirements()" onblur="hidePasswordRequirements()">
+                    <button type="button" class="pwd-toggle" aria-label="Toggle password" data-target="newPassword">👁️</button>
+                </div>
+                <div class="form-group pwd-wrapper">
+                    <input type="password" id="confirmNewPassword" class="input-field" placeholder="Confirm New Password" required>
+                    <button type="button" class="pwd-toggle" aria-label="Toggle password" data-target="confirmNewPassword">👁️</button>
+                </div>
+                <button onclick="completePasswordReset()" class="submit-button">Reset Password</button>
+                <div class="loading" id="resetStep3Loading"><span class="spinner"></span>Resetting password...</div>
+                <div id="resetStep3Error" class="error-message"></div>
+                <div class="toggle-form" onclick="goBackToStep2()">Back to Enter Code</div>
+            </div>
+
+            <button onclick="showLogin()" class="back-button">Back to Login</button>
         </div>
-        <div class="dropdown grade-menu">
-          <button class="btn nav-btn ">
-            <a class="tab nav-link active" href="#">Resource</a>
-          </button>
-   </div>
-   <div class="dropdown grade-menu">
-          <button class="btn nav-btn ">
-            <a class="tab nav-link active" href="">About us</a>
-          </button>
-   </div>
-      </div>
+
+        <div id="resultContainer" style="display:none;"></div>
     </div>
 
-    <!-- Clock (desktop only) -->
-    <div class="clock-box d-none d-lg-flex">
-      <div id="clock-time">00:00</div>
-      <div id="clock-ampm">AM</div>
-    </div>
+    <script>
+        // =====================================================
+        // 1) API ግንኙነት — google.script.run ን የሚተካ
+        //    ⚠️ ከታች ያለውን URL በራስዎ Apps Script /exec ሊንክ ይቀይሩ
+        // =====================================================
+        const API_URL = "https://script.google.com/macros/s/AKfycbyo4DoRjjPWLd14eUxbi3GD38EYNFEm1lr0MFXu7r8M8bG7KKe9fNFSAaoso0kM66MB/exec";
 
-  </div>
- 
-</nav>
+        window.google = { script: { get run() {
+            let ok = () => {}, fail = () => {};
+            const proxy = new Proxy({}, { get(_, name) {
+                if (name === 'withSuccessHandler') return f => { ok = f; return proxy; };
+                if (name === 'withFailureHandler') return f => { fail = f; return proxy; };
+                return (...args) => {
+                    fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // preflight ለማስቀረት
+                        body: JSON.stringify({ fn: name, args: args })
+                    })
+                    .then(r => r.json())
+                    .then(d => d.ok ? ok(d.result) : fail({ message: d.error }))
+                    .catch(e => fail({ message: 'Network error: ' + e.message }));
+                };
+            }});
+            return proxy;
+        }}};
 
-   <div class="portal-title">
-    <h2>“Work Hard, Play Smart.”</h2>
-      </div>
-<!-- ================= CONTENT ================= -->
-<section class="hero">
-  <div class="portal-box">
-    <p>
-      This portal provides access to assignments, projects, activities,
-      mid-exams, final exams, and total scores calculated from 100%.
-    </p>
-  </div>
-</section>
+        // =====================================================
+        // 2) የገጽ ሎጂክ
+        // =====================================================
+        let selectedSheet = null;
+        let globalResult = null;
+        let resetData = null;
 
-<!-- ================= FOOTER ================= -->
-<footer>
-  © 2024 Ahmu-Tec| Academic Portal
-  <div class="contact-info">
-        <p><i class="fas fa-phone"></i> Phone: +251 912 66 87 87</p>
-        <p><i class="fas fa-envelope"></i> Email: abuhanifa0915@gmail.com</p>
+        window.onload = function() {
+            google.script.run.withSuccessHandler(populateSheetDropdowns).getSheetNames();
 
-      </div>
-</footer>
+            document.querySelectorAll('.pwd-toggle').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    togglePasswordVisibility(this.getAttribute('data-target'));
+                });
+            });
+        };
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        function populateSheetDropdowns(sheets) {
+            const selectors = ['sheetSelector', 'createSheetSelector', 'resetSheetSelector']
+                .map(id => document.getElementById(id));
+            selectors.forEach(selector => {
+                selector.innerHTML = '';
+                sheets.forEach(sheet => {
+                    const option = document.createElement('option');
+                    option.value = sheet;
+                    option.text = sheet;
+                    selector.appendChild(option);
+                });
+            });
+            if (sheets.length > 0) {
+                selectedSheet = sheets[0];
+                selectors.forEach(s => s.value = selectedSheet);
+            }
+        }
 
-<!-- Clock Script -->
-<script>
-function updateClock() {
-  const now = new Date();
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let ampm = hours >= 12 ? "PM" : "AM";
+        function updateSheet() {
+            selectedSheet = document.getElementById('sheetSelector').value;
+        }
 
-  hours = hours % 12 || 12;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
+        function show(id, on) { document.getElementById(id).style.display = on ? 'block' : 'none'; }
 
-  document.getElementById("clock-time").textContent = hours + ":" + minutes;
-  document.getElementById("clock-ampm").textContent = ampm;
-}
-updateClock();
-setInterval(updateClock, 1000);
-</script>
+        function showCreatePassword() {
+            show('loginForm', false); show('createPasswordForm', true);
+            show('forgotPasswordForm', false); show('resultContainer', false);
+            show('loginError', false); show('createError', false);
+            ['createUsername', 'createEmail', 'createPassword', 'confirmPassword']
+                .forEach(id => document.getElementById(id).value = '');
+        }
 
+        function showForgotPassword() {
+            show('loginForm', false); show('createPasswordForm', false);
+            show('forgotPasswordForm', true); show('resultContainer', false);
+            show('resetStep1', true); show('resetStep2', false); show('resetStep3', false);
+            ['resetStep1Error', 'resetStep2Error', 'resetStep3Error',
+             'resetStep1Loading', 'resetStep2Loading', 'resetStep3Loading'].forEach(id => show(id, false));
+            ['resetUsername', 'resetCode', 'newPassword', 'confirmNewPassword']
+                .forEach(id => document.getElementById(id).value = '');
+        }
+
+        function showLogin() {
+            show('loginForm', true); show('createPasswordForm', false);
+            show('forgotPasswordForm', false); show('resultContainer', false);
+            ['createError', 'loginError', 'loginLoading', 'createPasswordLoading'].forEach(id => show(id, false));
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function goBackToStep1() {
+            show('resetStep1', true); show('resetStep2', false);
+            show('resetStep1Error', false); show('resetStep1Loading', false);
+        }
+
+        function goBackToStep2() {
+            show('resetStep2', true); show('resetStep3', false);
+            show('resetStep2Error', false); show('resetStep2Loading', false);
+        }
+
+        function requestResetCode() {
+            const username = document.getElementById('resetUsername').value.trim();
+            const sheetName = document.getElementById('resetSheetSelector').value;
+            const errorElement = document.getElementById('resetStep1Error');
+            const loadingIndicator = document.getElementById('resetStep1Loading');
+            const submitButton = document.querySelector('#resetStep1 .submit-button');
+
+            errorElement.style.display = 'none';
+            loadingIndicator.style.display = 'none';
+
+            if (!username) {
+                errorElement.textContent = 'Please enter your Student Code.';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            submitButton.disabled = true;
+
+            google.script.run
+                .withSuccessHandler((result) => {
+                    resetData = { username, sheetName };
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    show('resetStep1', false); show('resetStep2', true);
+                    document.getElementById('resetEmailInfo').textContent =
+                        `A reset code has been sent to ${result.email}. Please check your email.`;
+                })
+                .withFailureHandler((error) => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    errorElement.textContent = error.message || 'Failed to send reset code.';
+                    errorElement.style.display = 'block';
+                })
+                .initiatePasswordReset(username, sheetName);
+        }
+
+        function verifyResetCode() {
+            const resetCode = document.getElementById('resetCode').value.trim();
+            const errorElement = document.getElementById('resetStep2Error');
+
+            errorElement.style.display = 'none';
+
+            if (!resetCode || resetCode.length !== 6) {
+                errorElement.textContent = 'Please enter a valid 6-digit reset code.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            // ትክክለኛው ማረጋገጫ በStep 3 ላይ በBackend ይደረጋል
+            show('resetStep2', false); show('resetStep3', true);
+        }
+
+        function completePasswordReset() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            const resetCode = document.getElementById('resetCode').value.trim();
+            const errorElement = document.getElementById('resetStep3Error');
+            const loadingIndicator = document.getElementById('resetStep3Loading');
+            const submitButton = document.querySelector('#resetStep3 .submit-button');
+
+            errorElement.style.display = 'none';
+            loadingIndicator.style.display = 'none';
+
+            if (!newPassword || !confirmPassword) {
+                errorElement.textContent = 'Please fill in all password fields.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                errorElement.textContent = 'Passwords do not match!';
+                errorElement.style.display = 'block';
+                return;
+            }
+            if (newPassword.length < 2) {
+                errorElement.textContent = 'Password must be at least 2 characters long.';
+                errorElement.style.display = 'block';
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            submitButton.disabled = true;
+
+            google.script.run
+                .withSuccessHandler(() => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    alert('Password reset successfully! You can now login with your new password.');
+                    showLogin();
+                })
+                .withFailureHandler((error) => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    errorElement.textContent = error.message || 'Failed to reset password.';
+                    errorElement.style.display = 'block';
+                })
+                .completePasswordReset(resetData.username, resetCode, newPassword, resetData.sheetName);
+        }
+
+        function createNewPassword() {
+            const username = document.getElementById('createUsername').value.trim();
+            const email = document.getElementById('createEmail').value.trim();
+            const password = document.getElementById('createPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const sheetName = document.getElementById('createSheetSelector').value;
+            const createError = document.getElementById('createError');
+            const loadingIndicator = document.getElementById('createPasswordLoading');
+            const submitButton = document.querySelector('#createPasswordForm .submit-button');
+
+            createError.style.display = 'none';
+            loadingIndicator.style.display = 'none';
+
+            if (!username || !email || !password || !confirmPassword) {
+                createError.textContent = 'Please fill in all fields.';
+                createError.style.display = 'block';
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                createError.textContent = 'Please enter a valid email address.';
+                createError.style.display = 'block';
+                return;
+            }
+            if (password !== confirmPassword) {
+                createError.textContent = 'Passwords do not match!';
+                createError.style.display = 'block';
+                return;
+            }
+            if (password.length < 2) {
+                createError.textContent = 'Password must be at least 2 characters long.';
+                createError.style.display = 'block';
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            submitButton.disabled = true;
+
+            google.script.run
+                .withSuccessHandler(() => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    alert('Password created successfully! Your email has been registered for recovery purposes.');
+                    showLogin();
+                })
+                .withFailureHandler((error) => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    createError.textContent = error.message;
+                    createError.style.display = 'block';
+                })
+                .createPassword(username, password, email, sheetName);
+        }
+
+        function showPasswordRequirements() { show('passwordRequirements', true); }
+        function hidePasswordRequirements() { show('passwordRequirements', false); }
+
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.type = (input.type === 'password') ? 'text' : 'password';
+        }
+
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+            const loadingIndicator = document.getElementById('loginLoading');
+            const submitButton = document.querySelector('#loginForm .submit-button');
+
+            loginError.style.display = 'none';
+            loadingIndicator.style.display = 'none';
+
+            if (!username || !password) {
+                loginError.textContent = "Please enter Student Code and Password.";
+                loginError.style.display = 'block';
+                return;
+            }
+
+            loadingIndicator.style.display = 'block';
+            submitButton.disabled = true;
+
+            google.script.run
+                .withSuccessHandler((result) => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    showResult(result);
+                })
+                .withFailureHandler((error) => {
+                    loadingIndicator.style.display = 'none';
+                    submitButton.disabled = false;
+                    loginError.textContent = error.message || 'Login failed.';
+                    loginError.style.display = 'block';
+                })
+                .getStudentData(username, password, selectedSheet);
+        }
+
+        function showResult(result) {
+            globalResult = result;
+            const resultContainer = document.getElementById('resultContainer');
+            if (result) {
+                resultContainer.innerHTML = generateResultHTML(result);
+                show('loginForm', false);
+                resultContainer.style.display = 'block';
+            }
+        }
+
+        function formatValue(v) {
+            if (v === undefined || v === null || v === '') return '';
+            if (typeof v === 'number' || (typeof v === 'string' && v.trim() !== '' && !isNaN(v))) {
+                return String(Math.round(Number(v) * 100) / 100);
+            }
+            return v;
+        }
+
+        function buildRows(studentData, allHeaders, percentages) {
+            let rows = '';
+            for (let i = 4; i < allHeaders.length; i++) {
+                let header = allHeaders[i] || `Column ${String.fromCharCode(65 + i)}`;
+                let percentage = percentages[i] || '';
+                let percentageDisplay = percentage ? (String(percentage).includes('%') ? percentage : `${percentage}%`) : '';
+                let combinedHeader = percentage ? `${escapeHtml(header)} (${escapeHtml(percentageDisplay)})` : escapeHtml(header);
+                let dataValue = studentData[i] !== undefined && studentData[i] !== ''
+                    ? escapeHtml(formatValue(studentData[i]))
+                    : `<mark class='mark-highlight'> </mark>`;
+                rows += `<tr><td>${combinedHeader}:</td><td>${dataValue}</td></tr>`;
+            }
+            return rows;
+        }
+
+        function switchTab(index) {
+            document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === index));
+            document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === index));
+        }
+
+        function generateResultHTML(result) {
+            const rollNumber = result.rollNumber;
+
+            const tabs = [{
+                sheetName: result.sheetName || selectedSheet,
+                title: result.title,
+                studentData: result.studentData,
+                allHeaders: result.allHeaders,
+                percentages: result.percentages
+            }].concat(result.otherTabs || []);
+
+            const tabButtons = tabs.map((t, i) =>
+                `<button type="button" class="tab-btn ${i === 0 ? 'active' : ''}" onclick="switchTab(${i})">${escapeHtml(t.sheetName)}</button>`
+            ).join('');
+
+            const tabPanels = tabs.map((t, i) => {
+                const showAssessment = String(t.sheetName).trim().toLowerCase() !== 'total';
+                const assessmentLine = showAssessment
+                    ? '<br> Classroom Assessment (' + escapeHtml(t.sheetName) + ')'
+                    : '';
+
+                return `
+                <div class="tab-panel ${i === 0 ? 'active' : ''}">
+                    <table>
+                        <tr><th colspan="2"><center>
+                            <b style="border-radius:15%; padding:2px; font-family: Georgia, serif;"><u>${escapeHtml(t.title || t.sheetName)}</u></b>
+                            ${assessmentLine}
+                        </center></th></tr>
+                        <tr><td>Roll Number:</td><td>${escapeHtml(rollNumber)}</td></tr>
+                        ${buildRows(t.studentData, t.allHeaders, t.percentages)}
+                    </table>
+                </div>`;
+            }).join('');
+
+            return `
+                <div class="tab-bar">${tabButtons}</div>
+                ${tabPanels}
+                <button onclick="showLogin()" class="back-button">Back to Home</button>
+            `;
+        }
+
+        function escapeHtml(value) {
+            if (value === undefined || value === null) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Feedback (ገጹ ላይ የ#feedbackComment ሳጥን ከተጨመረ ይሰራል)
+        function submitFeedback() {
+            const now = new Date();
+            const date = now.toLocaleDateString('en-US', { timeZone: 'Africa/Addis_Ababa' });
+            const time = now.toLocaleTimeString('en-US', {
+                timeZone: 'Africa/Addis_Ababa', hour12: false,
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+            const comment = document.getElementById('feedbackComment').value;
+            if (!comment) { alert('Please enter your feedback.'); return; }
+
+            google.script.run
+                .withSuccessHandler(() => {
+                    alert('Feedback submitted successfully!');
+                    document.getElementById('feedbackComment').value = '';
+                })
+                .withFailureHandler((error) => {
+                    alert(error.message || 'Failed to submit feedback. Please try again.');
+                })
+                .submitComment(selectedSheet, document.getElementById('username').value,
+                    globalResult.rollNumber, comment, globalResult.studentName, date, time);
+        }
+    </script>
 </body>
 </html>
-
-
