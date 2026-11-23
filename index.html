@@ -11,7 +11,36 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
    <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+   .dropdown-submenu {
+  position: relative;
+}
 
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -0.125rem;
+  margin-left: 0.1rem;
+}
+
+/* በኮምፒውተር ስክሪን (Desktop) ላይ በ Hover እንዲከፈት */
+@media (min-width: 768px) {
+  .dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+  }
+}
+
+/* በሞባይል ስክሪን ላይ ሲከፈት ወደ ታች እንዲዘረጋ */
+@media (max-width: 767.98px) {
+  .dropdown-submenu > .dropdown-menu.show {
+    display: block;
+    position: static;
+    margin-left: 1rem;
+    border: none;
+    box-shadow: none;
+  }
+}
+</style>
 <body>
 
 <!-- ================= NAVBAR ================= -->
@@ -44,16 +73,59 @@
             <a class="tab nav-link active" href=" https://at-smts.netlify.app/">AHT</a>
           </button>
    </div>
- <div class="dropdown grade-menu">
-            <button class="btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
-            Class Room</br> Assessment          </button>
-         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="Grade-9.html">Grade-9</a></li>
-            <li><a class="dropdown-item" href="Grade-10.html">Grade-10</a></li>
-            <li><a class="dropdown-item" href="Grade-11.html">Grade-11</a></li>
-             <li><a class="dropdown-item" href="Grade-12.html">Grade-12</a></li>
-          </ul>
-        </div>
+<div class="dropdown grade-menu">
+  <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Class Room<br>Assessment
+  </button>
+
+  <ul class="dropdown-menu">
+    <!-- Grade-9 Sub-dropdown -->
+    <li class="dropdown-submenu">
+      <a class="dropdown-item dropdown-toggle" href="Grade-9.html">Grade-9</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="https://script.google.com/macros/s/AKfycbyo4DoRjjPWLd14eUxbi3GD38EYNFEm1lr0MFXu7r8M8bG7KKe9fNFSAaoso0kM66MB/exec">Grade-9A</a></li>
+        <li><a class="dropdown-item" href="grade9-test2.html">Grade-9B</a></li>
+        <li><a class="dropdown-item" href="grade9-midterm.html">Grade-9C</a></li>
+        <li><a class="dropdown-item" href="grade9-final.html">Grade-9D</a></li>
+       <li><a class="dropdown-item" href="grade9-final.html">Grade-9E</a></li>
+         <li><a class="dropdown-item" href="grade9-final.html">Grade-9F</a></li>
+      </ul>
+    </li>
+
+    <!-- Grade-10 Sub-dropdown -->
+    <li class="dropdown-submenu">
+      <a class="dropdown-item dropdown-toggle" href="Grade-10.html">Grade-10</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="grade10-test1.html">Assessment 1</a></li>
+        <li><a class="dropdown-item" href="grade10-test2.html">Assessment 2</a></li>
+        <li><a class="dropdown-item" href="grade10-midterm.html">Midterm Exam</a></li>
+        <li><a class="dropdown-item" href="grade10-final.html">Final Exam</a></li>
+      </ul>
+    </li>
+
+    <!-- Grade-11 Sub-dropdown -->
+    <li class="dropdown-submenu">
+      <a class="dropdown-item dropdown-toggle" href="Grade-11.html">Grade-11</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="grade11-test1.html">Assessment 1</a></li>
+        <li><a class="dropdown-item" href="grade11-test2.html">Assessment 2</a></li>
+        <li><a class="dropdown-item" href="grade11-midterm.html">Midterm Exam</a></li>
+        <li><a class="dropdown-item" href="grade11-final.html">Final Exam</a></li>
+      </ul>
+    </li>
+
+    <!-- Grade-12 Sub-dropdown -->
+    <li class="dropdown-submenu">
+      <a class="dropdown-item dropdown-toggle" href="Grade-12.html">Grade-12</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="grade12-test1.html">Assessment 1</a></li>
+        <li><a class="dropdown-item" href="grade12-test2.html">Assessment 2</a></li>
+        <li><a class="dropdown-item" href="grade12-midterm.html">Midterm Exam</a></li>
+        <li><a class="dropdown-item" href="grade12-final.html">Final Exam</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
     <div class="dropdown grade-menu">
             <button class="btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
          Total Mark </br>From 100%
@@ -131,6 +203,35 @@
 
 <!-- Clock Script -->
 <script>
+   <script>
+  document.querySelectorAll('.dropdown-submenu > a.dropdown-toggle').forEach(function (toggle) {
+    toggle.addEventListener('click', function (e) {
+      const submenu = this.nextElementSibling;
+      if (submenu && submenu.classList.contains('dropdown-menu')) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // ሌሎች ክፍት የነበሩ submenuዎችን መዝጋት
+        this.closest('.dropdown-menu').querySelectorAll('.dropdown-menu.show').forEach(function (openMenu) {
+          if (openMenu !== submenu) {
+            openMenu.classList.remove('show');
+          }
+        });
+
+        submenu.classList.toggle('show');
+      }
+    });
+  });
+
+  // ዋናው dropdown ሲዘጋ ሁሉንም submenuዎች መዝጋት
+  document.querySelectorAll('.dropdown').forEach(function (dd) {
+    dd.addEventListener('hidden.bs.dropdown', function () {
+      this.querySelectorAll('.dropdown-menu.show').forEach(function (openMenu) {
+        openMenu.classList.remove('show');
+      });
+    });
+  });
+</script>
 function updateClock() {
   const now = new Date();
   let hours = now.getHours();
