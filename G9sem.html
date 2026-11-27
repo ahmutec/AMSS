@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b6b36">
+<title>Student Result Portal</title>
+<link rel="icon" href="aw.png">
+<link rel="preload" as="image" href="aw.webp" type="image/webp" fetchpriority="high">
+<style>
+  :root{
+    --g1:#0b6b36; --g2:#18a64a; --g3:#e8f6ee;
+    --ink:#12301f; --muted:#5b6f63; --line:#e1ebe4; --card:#ffffff;
+    --red:#d32f2f; --yellow:#ffeb3b; --yellow-soft:#fff8c5;
+    --radius:20px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; min-height:100vh; min-height:100dvh;
+    display:flex; flex-direction:column;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Ethiopic",Nyala,Arial,sans-serif;
+    color:var(--ink); background:#0b6b36;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background:
+      url("aw.webp") center/cover no-repeat,
+      linear-gradient(160deg,#0b6b36,#0f8a45);
+  }
+  .shell{flex:1 0 auto; width:min(100%,760px); margin:0 auto;
+    padding:calc(22px + env(safe-area-inset-top,0px)) 14px 34px;
+    display:flex; flex-direction:column}
+  body[data-view="result"] .shell{width:min(100%,820px)}
+
+  /* ---------- brand header: always at the top, centered ---------- */
+  .brand{display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; color:#fff; margin:0 0 22px; flex:none}
+  .brand img{width:clamp(84px,22vw,120px); height:clamp(84px,22vw,120px); border-radius:50%;
+    background:#fff; object-fit:cover; border:4px solid rgba(255,255,255,.9);
+    box-shadow:0 10px 28px rgba(0,0,0,.4)}
+  .brand .txt{background:rgba(5,50,26,.66); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    padding:10px 22px; border-radius:18px; box-shadow:0 8px 22px rgba(0,0,0,.25)}
+  .brand h1{margin:0; font-size:clamp(1.35rem,4.2vw,2rem); line-height:1.15; letter-spacing:.3px}
+  .brand p{margin:4px 0 0; font-size:clamp(.86rem,2.4vw,1.05rem); opacity:.95}
+
+  /* ---------- login / create / reset: card centered in the space below the title ---------- */
+  body:not([data-view="result"]) .shell > .panel{margin:auto}
+
+  /* ---------- computer: logo beside the title, still top-center ---------- */
+  @media (min-width:900px){
+    .brand{flex-direction:row; justify-content:center; gap:8px}
+    .brand img{width:92px; height:92px}
+    .brand .txt{text-align:left}
+    /* result page: no logo, title stays a centered chip above the card */
+    body[data-view="result"] .brand img{display:none}
+    body[data-view="result"] .brand{margin-bottom:14px}
+    body[data-view="result"] .brand .txt{text-align:center}
+  }
+
+  /* ---------- cards / forms ---------- */
+  .panel{
+    background:rgba(255,255,255,.96); border-radius:var(--radius);
+    padding:22px; box-shadow:0 18px 40px rgba(0,0,0,.28);
+    width:min(100%,460px); margin:0 auto; position:relative;
+  }
+  .panel h2{margin:0 0 12px; font-size:1.2rem; color:var(--g1)}
+  .hint{font-size:.8rem; color:var(--muted); margin:-4px 0 12px; line-height:1.5}
+  .step{background:#eef6ff; border-radius:12px; padding:10px 12px; font-size:.86rem; margin-bottom:12px}
+
+  label{display:block; font-size:.78rem; font-weight:700; color:var(--muted); margin:0 0 5px 3px;
+    text-transform:uppercase; letter-spacing:.5px}
+  .field{margin-bottom:14px}
+  .field input,.field select{
+    width:100%; padding:13px 14px; font-size:1rem; color:var(--ink);
+    border:2px solid var(--line); border-radius:14px; background:#fff; outline:none;
+    transition:border-color .2s, box-shadow .2s; appearance:none; -webkit-appearance:none;
+  }
+  .field select{background-image:linear-gradient(45deg,transparent 50%,#789 50%),linear-gradient(135deg,#789 50%,transparent 50%);
+    background-position:calc(100% - 20px) 55%,calc(100% - 14px) 55%; background-size:6px 6px; background-repeat:no-repeat; padding-right:36px}
+  .field input:focus,.field select:focus{border-color:var(--g2); box-shadow:0 0 0 4px rgba(24,166,74,.18)}
+  .pwd{position:relative}
+  .pwd input{padding-right:50px}
+  .eye{position:absolute; right:6px; top:50%; transform:translateY(-50%); width:40px; height:40px;
+    border:0; background:transparent; font-size:1.15rem; cursor:pointer; border-radius:50%}
+  .eye:hover{background:var(--g3)}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font:inherit; font-weight:700; border:0; cursor:pointer; border-radius:14px;
+    padding:13px 18px; transition:transform .15s, box-shadow .15s, background .2s;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.6; cursor:not-allowed}
+  .btn.primary{width:100%; color:#fff; font-size:1.05rem;
+    background:linear-gradient(135deg,var(--g1),var(--g2)); box-shadow:0 8px 18px rgba(11,107,54,.35)}
+  .btn.primary:hover:not(:disabled){box-shadow:0 10px 22px rgba(11,107,54,.45)}
+  .btn.soft{background:var(--g3); color:var(--g1); font-size:.9rem; padding:10px 14px}
+  .btn.soft:hover{background:#d5eedd}
+  .btn.out{background:#fff; color:var(--ink); border:2px solid var(--line); font-size:.9rem; padding:10px 14px}
+  .row{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:14px}
+  .back{margin-top:12px; text-align:center}
+  .link{background:none; border:0; color:#0b57b0; font:inherit; font-size:.88rem; cursor:pointer; padding:6px; margin-top:6px}
+  .link:hover{text-decoration:underline}
+
+  .loading{display:none; text-align:center; margin:10px 0 0; color:var(--g1); font-size:.9rem}
+  .spinner{display:inline-block; vertical-align:middle; width:18px; height:18px; margin-right:8px;
+    border:3px solid #cfe8d8; border-top-color:var(--g2); border-radius:50%; animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .error{display:none; margin-top:12px; padding:10px 12px; border-radius:12px;
+    background:#fdecea; color:#a32020; font-size:.88rem; border:1px solid #f5c2bd}
+
+  /* ================= RESULT VIEW (table) ================= */
+  #resultContainer{display:none}
+  .rcard{background:rgba(255,255,255,.97); border-radius:var(--radius); box-shadow:0 18px 40px rgba(0,0,0,.28); overflow:hidden; animation:fade .35s ease}
+  @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  .who{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; padding:12px 16px;
+    background:linear-gradient(135deg,var(--g1),var(--g2)); color:#fff}
+  .who .nm{font-weight:800; font-size:1.05rem}
+  .who .meta{display:flex; gap:6px; flex-wrap:wrap}
+  .who .roll{font-size:.8rem; font-weight:700; background:rgba(255,255,255,.2); border-radius:999px; padding:3px 11px}
+  .tablewrap{overflow-x:auto}
+  table.rt{width:100%; border-collapse:separate; border-spacing:0; font-size:.92rem}
+  .rt th,.rt td{padding:10px 8px; text-align:center; border-bottom:1px solid var(--line)}
+  .rt thead th{background:#0f7a3e; color:#fff; font-size:.82rem; letter-spacing:.3px}
+  .rt .sub{text-align:left; padding-left:14px; font-weight:700; min-width:120px; position:sticky; left:0; background:#fff; z-index:1}
+  .rt thead .sub{background:#0f7a3e; z-index:2}
+  .rt .sub small{display:block; font-weight:600; font-size:.68rem; color:var(--muted)}
+  .rt tbody tr:nth-child(even) td,.rt tbody tr:nth-child(even) .sub{background:#f6fbf8}
+  .rt td{font-weight:700; font-variant-numeric:tabular-nums}
+  .rt td.red{color:var(--red); font-weight:800}
+  .rt td.inc{background:var(--yellow)!important; color:#3b3300}
+  .rt td.emp{background:var(--yellow-soft)!important; color:#9a8b00}
+  .rt tfoot td,.rt tfoot .sub{background:var(--g3); font-weight:800}
+  .rt tfoot tr:first-child td{border-top:3px solid var(--g2)}
+  .rt tfoot td.inc{background:var(--yellow)!important}
+  .chip2{display:inline-block; padding:3px 10px; border-radius:999px; background:#fff; border:1px solid #bfe3cc; font-size:.8rem}
+  .rt td.inc .chip2{background:transparent; border-color:#c9b400}
+  .actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:16px}
+  .actions .btn{background:#fff; color:var(--g1); box-shadow:0 4px 12px rgba(0,0,0,.2)}
+  .noresult{padding:26px; text-align:center; color:var(--muted)}
+
+  /* ================= FOOTER (full width) ================= */
+  .site-foot{
+    flex:none; width:100%; text-align:center; color:#fff; font-size:.82rem; letter-spacing:.3px;
+    padding:16px 14px calc(16px + env(safe-area-inset-bottom,0px));
+    background:linear-gradient(135deg,#053d1f 0%,#0b6b36 50%,#18a64a 100%);
+    border-top:3px solid #f2c94c; box-shadow:0 -6px 20px rgba(0,0,0,.25);
+  }
+
+  @media (max-width:480px){
+    .rt{font-size:.82rem}
+    .rt th,.rt td{padding:9px 3px}
+    .rt .sub{min-width:0; width:34%; padding-left:10px; font-size:.8rem}
+    .chip2{padding:2px 6px; font-size:.68rem}
+  }
+  .wm{display:none}
+  @media (prefers-reduced-motion:reduce){*:not(.spinner){animation:none!important; transition:none!important}}
+  .spinner{animation:spin .8s linear infinite!important}
+  @page{size:A4; margin:0}   /* margin 0 = the browser's own header/footer (file path, date, title) is not printed */
+  @media print{
+    body{background:#fff}
+    body::before,.actions{display:none!important}
+    .brand{color:#000; margin-bottom:10px} .brand .txt{background:none; box-shadow:none; color:#000; padding:0}
+    .brand img{position:static!important; display:block!important; box-shadow:none; width:70px; height:70px}
+    .shell{padding:12mm 12mm 22mm; width:100%}
+    .rcard{box-shadow:none}
+    .site-foot{display:block!important; position:fixed; left:0; right:0; bottom:0; width:100%;
+      background:none!important; border:0!important; box-shadow:none!important;
+      color:#333; font-size:11px; padding:0 0 8mm}
+    .wm{display:flex!important; position:fixed; inset:0; align-items:center; justify-content:center;
+      z-index:9999; pointer-events:none}
+    .wm img{width:420px; max-width:80%; height:auto; opacity:.1}
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<main class="shell">
+
+  <header class="brand">
+    <img src="aw.png" alt="Awolia logo" width="128" height="128">
+    <div class="txt">
+      <h1>Student Result Portal</h1>
+      <p>Awolia No.1 Muslim Secondary School</p>
+    </div>
+  </header>
+
+  <!-- ================= LOGIN ================= -->
+  <section class="panel" id="loginForm">
+    <form id="loginFormEl" autocomplete="on">
+      <div class="field"><label for="loginSection">Grade / Section</label>
+        <select id="loginSection" class="secSel" required></select></div>
+      <div class="field"><label for="username">Student Code</label>
+        <input type="text" id="username" placeholder="Student Code" autocomplete="username" autocapitalize="off" required></div>
+      <div class="field"><label for="password">Password</label>
+        <div class="pwd"><input type="password" id="password" placeholder="Password" autocomplete="current-password" required>
+        <button type="button" class="eye" aria-label="Show or hide password" data-target="password">👁️</button></div></div>
+      <button type="submit" class="btn primary" id="loginBtn">Submit</button>
+    </form>
+    <div class="loading" id="loginLoading"><span class="spinner"></span>Processing...</div>
+    <div class="error" id="loginError"></div>
+    <div class="row">
+      <button class="btn soft" type="button" onclick="showCreatePassword()">Create New Password</button>
+      <button class="btn out" type="button" onclick="showForgotPassword()">Forgot Password</button>
+    </div>
+  </section>
+
+  <!-- ================= CREATE PASSWORD ================= -->
+  <section class="panel" id="createPasswordForm" style="display:none">
+    <h2>Create New Password</h2>
+    <p class="hint">Please provide your email address for password recovery purposes.</p>
+    <form id="createFormEl">
+      <div class="field"><label for="createSection"> Section</label>
+        <select id="createSection" class="secSel" required></select></div>
+      <div class="field"><label for="createUsername">Student Code</label>
+        <input type="text" id="createUsername" placeholder="Student Code" autocapitalize="off" required></div>
+      <div class="field"><label for="createEmail">Email</label>
+        <input type="email" id="createEmail" placeholder="Email Address (Required for recovery)" required></div>
+      <div class="field"><label for="createPassword">New Password</label>
+        <div class="pwd"><input type="password" id="createPassword" placeholder="New Password" autocomplete="new-password" required>
+        <button type="button" class="eye" aria-label="Show or hide password" data-target="createPassword">👁️</button></div>
+        <p class="hint" style="margin:6px 0 0">At least 2 characters — letters, numbers or symbols.</p></div>
+      <div class="field"><label for="confirmPassword">Confirm Password</label>
+        <div class="pwd"><input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" required>
+        <button type="button" class="eye" aria-label="Show or hide password" data-target="confirmPassword">👁️</button></div></div>
+      <button type="submit" class="btn primary" id="createBtn">Create Password</button>
+    </form>
+    <div class="loading" id="createPasswordLoading"><span class="spinner"></span>Creating password...</div>
+    <div class="error" id="createError"></div>
+    <div class="back"><button class="btn out" type="button" onclick="showLogin()">← Back to Home</button></div>
+  </section>
+
+  <!-- ================= FORGOT PASSWORD ================= -->
+  <section class="panel" id="forgotPasswordForm" style="display:none">
+    <h2>Reset Your Password</h2>
+
+    <div id="resetStep1">
+      <div class="step">Select your grade / section and enter your student code to receive a reset code via email.</div>
+      <form id="resetForm1">
+        <div class="field"><label for="resetSection">Grade / Section</label>
+          <select id="resetSection" class="secSel" required></select></div>
+        <div class="field"><label for="resetUsername">Student Code</label>
+          <input type="text" id="resetUsername" placeholder="Student Code" autocapitalize="off" required></div>
+        <button type="submit" class="btn primary" id="resetBtn1">Send Reset Code</button>
+      </form>
+      <div class="loading" id="resetStep1Loading"><span class="spinner"></span>Sending reset code...</div>
+      <div class="error" id="resetStep1Error"></div>
+    </div>
+
+    <div id="resetStep2" style="display:none">
+      <div class="step" id="resetEmailInfo">A reset code has been sent to your email.</div>
+      <form id="resetForm2">
+        <div class="field"><label for="resetCode">Reset Code</label>
+          <input type="text" id="resetCode" placeholder="6-digit Reset Code" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required></div>
+        <button type="submit" class="btn primary" id="resetBtn2">Verify Code</button>
+      </form>
+      <div class="loading" id="resetStep2Loading"><span class="spinner"></span>Verifying code...</div>
+      <div class="error" id="resetStep2Error"></div>
+      <div class="back"><button class="link" type="button" onclick="goBackToStep1()">Back to Request Code</button></div>
+    </div>
+
+    <div id="resetStep3" style="display:none">
+      <div class="step">Enter your new password.</div>
+      <form id="resetForm3">
+        <div class="field"><label for="newPassword">New Password</label>
+          <div class="pwd"><input type="password" id="newPassword" placeholder="New Password" autocomplete="new-password" required>
+          <button type="button" class="eye" aria-label="Show or hide password" data-target="newPassword">👁️</button></div></div>
+        <div class="field"><label for="confirmNewPassword">Confirm New Password</label>
+          <div class="pwd"><input type="password" id="confirmNewPassword" placeholder="Confirm New Password" autocomplete="new-password" required>
+          <button type="button" class="eye" aria-label="Show or hide password" data-target="confirmNewPassword">👁️</button></div></div>
+        <button type="submit" class="btn primary" id="resetBtn3">Reset Password</button>
+      </form>
+      <div class="loading" id="resetStep3Loading"><span class="spinner"></span>Resetting password...</div>
+      <div class="error" id="resetStep3Error"></div>
+      <div class="back"><button class="link" type="button" onclick="goBackToStep2()">Back to Enter Code</button></div>
+    </div>
+
+    <div class="back"><button class="btn out" type="button" onclick="showLogin()">← Back to Login</button></div>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section id="resultContainer"></section>
+
+</main>
+
+<div class="wm" aria-hidden="true"><img src="aw.png" alt=""></div>
+
+<footer class="site-foot">© Awolia Muslim Schools · Academic Portal</footer>
+
+<script>
+/* =====================================================================
+   SETTINGS
+   Sections are defined in Code.gs (SECTIONS). DEFAULT_SECTIONS only makes
+   the dropdown appear instantly; the list is refreshed from the server.
+   ===================================================================== */
+const API_URL = "https://script.google.com/macros/s/AKfycbzLdCvB52vSQNZjYkLLtft-JpYfbjM_LsjAx19ZaiX4NwZhEDLoN1z64Dog0d3vIeoa/exec";
+const DEFAULT_SECTIONS = ["G-9A", "G-9B", "G-9C", "G-9D", "G-9E", "G-9F"];
+
+const PASS_MARK  = 50;                  // marks (out of 100) below this → red
+const INCOMPLETE_REGEX = /incomplet/i;  // matches "Incomplete" (any case)
+const FIRST_MARK_COL = 5;               // columns A-E: code, password, email, roll no., name
+const FIRST_SUBJECT_COL = 7;            // subjects start at column H
+
+let globalResult = null;
+let resetData = null;
+
+/* ---------------- API helper (text/plain body = no CORS preflight) ---------------- */
+async function api(action, payload) {
+  if (!API_URL || API_URL.indexOf("PASTE_") === 0) throw new Error("API_URL is not set in index.html.");
+  let res;
+  try {
+    res = await fetch(API_URL, { method: "POST",
+      body: JSON.stringify(Object.assign({ action: action }, payload || {})) });
+  } catch (e) {
+    throw new Error("Network problem. Please check your connection and try again.");
+  }
+  let json;
+  try { json = await res.json(); } catch (e) { throw new Error("Unexpected server response. Please try again."); }
+  if (!json.ok) throw new Error(json.error || "Something went wrong.");
+  return json.data;
+}
+
+/* ---------------- small UI helpers ---------------- */
+const $ = (id) => document.getElementById(id);
+function show(id, on, display) { $(id).style.display = on ? (display || "block") : "none"; }
+function setError(id, msg) { const el = $(id); el.textContent = msg || ""; el.style.display = msg ? "block" : "none"; }
+function busy(btnId, loadId, on) { $(btnId).disabled = on; $(loadId).style.display = on ? "block" : "none"; }
+function escapeHtml(v) {
+  if (v === undefined || v === null) return "";
+  return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                  .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+/* ---------------- section dropdowns (all three forms stay in sync) ---------------- */
+function fillSections(list) {
+  if (!list || !list.length) return;
+  document.querySelectorAll(".secSel").forEach(sel => {
+    const keep = sel.value;
+    sel.innerHTML = "";
+    const ph = document.createElement("option");
+    ph.value = ""; ph.textContent = "Select Grade / Section"; ph.disabled = true; ph.selected = true;
+    sel.appendChild(ph);
+    list.forEach(s => { const o = document.createElement("option"); o.value = s; o.textContent = s; sel.appendChild(o); });
+    if (keep && list.indexOf(keep) !== -1) sel.value = keep;
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  setView("login");
+  fillSections(DEFAULT_SECTIONS);
+  api("sheets").then(fillSections).catch(() => {});     // refresh list + wake the server up
+
+  document.querySelectorAll(".secSel").forEach(sel => sel.addEventListener("change", () => {
+    document.querySelectorAll(".secSel").forEach(o => { if (o !== sel) o.value = sel.value; });
+  }));
+  document.querySelectorAll(".eye").forEach(b => b.addEventListener("click", () => {
+    const i = $(b.dataset.target); if (i) i.type = i.type === "password" ? "text" : "password";
+  }));
+
+  $("loginFormEl").addEventListener("submit", e => { e.preventDefault(); login(); });
+  $("createFormEl").addEventListener("submit", e => { e.preventDefault(); createNewPassword(); });
+  $("resetForm1").addEventListener("submit", e => { e.preventDefault(); requestResetCode(); });
+  $("resetForm2").addEventListener("submit", e => { e.preventDefault(); verifyResetCode(); });
+  $("resetForm3").addEventListener("submit", e => { e.preventDefault(); completePasswordReset(); });
+});
+
+/* ---------------- navigation between forms ---------------- */
+function setView(v) {
+  document.body.dataset.view = v;
+  show("loginForm", v === "login"); show("createPasswordForm", v === "create");
+  show("forgotPasswordForm", v === "reset"); show("resultContainer", v === "result");
+  window.scrollTo({ top: 0 });
+}
+function showCreatePassword() {
+  setView("create"); setError("loginError"); setError("createError");
+  ["createUsername", "createEmail", "createPassword", "confirmPassword"].forEach(id => $(id).value = "");
+}
+function showForgotPassword() {
+  setView("reset");
+  show("resetStep1", true); show("resetStep2", false); show("resetStep3", false);
+  ["resetStep1Error", "resetStep2Error", "resetStep3Error"].forEach(id => setError(id));
+  ["resetStep1Loading", "resetStep2Loading", "resetStep3Loading"].forEach(id => show(id, false));
+  ["resetUsername", "resetCode", "newPassword", "confirmNewPassword"].forEach(id => $(id).value = "");
+}
+function showLogin() {
+  globalResult = null; $("resultContainer").innerHTML = "";
+  setView("login"); setError("createError"); setError("loginError");
+  show("loginLoading", false); show("createPasswordLoading", false);
+  $("username").value = ""; $("password").value = "";
+}
+function goBackToStep1() { show("resetStep1", true); show("resetStep2", false); setError("resetStep1Error"); show("resetStep1Loading", false); }
+function goBackToStep2() { show("resetStep2", true); show("resetStep3", false); setError("resetStep2Error"); show("resetStep2Loading", false); }
+
+/* ---------------- forgot password (3 steps) ---------------- */
+async function requestResetCode() {
+  const section = $("resetSection").value;
+  const username = $("resetUsername").value.trim();
+  setError("resetStep1Error");
+  if (!section) return setError("resetStep1Error", "Please select your Grade / Section.");
+  if (!username) return setError("resetStep1Error", "Please enter your Student Code.");
+  busy("resetBtn1", "resetStep1Loading", true);
+  try {
+    const r = await api("initReset", { section, username });
+    resetData = { section, username };
+    show("resetStep1", false); show("resetStep2", true);
+    $("resetEmailInfo").textContent = "A reset code has been sent to " + r.email + ". Please check your email.";
+  } catch (e) { setError("resetStep1Error", e.message || "Failed to send reset code."); }
+  busy("resetBtn1", "resetStep1Loading", false);
+}
+
+async function verifyResetCode() {
+  const code = $("resetCode").value.trim();
+  setError("resetStep2Error");
+  if (code.length !== 6) return setError("resetStep2Error", "Please enter a valid 6-digit reset code.");
+  busy("resetBtn2", "resetStep2Loading", true);
+  try {
+    await api("verifyReset", { section: resetData.section, username: resetData.username, code });
+    show("resetStep2", false); show("resetStep3", true);
+  } catch (e) { setError("resetStep2Error", e.message || "Invalid reset code."); }
+  busy("resetBtn2", "resetStep2Loading", false);
+}
+
+async function completePasswordReset() {
+  const p1 = $("newPassword").value, p2 = $("confirmNewPassword").value;
+  setError("resetStep3Error");
+  if (!p1 || !p2) return setError("resetStep3Error", "Please fill in all password fields.");
+  if (p1 !== p2) return setError("resetStep3Error", "Passwords do not match!");
+  if (p1.length < 2) return setError("resetStep3Error", "Password must be at least 2 characters long.");
+  busy("resetBtn3", "resetStep3Loading", true);
+  try {
+    await api("completeReset", { section: resetData.section, username: resetData.username,
+                                 code: $("resetCode").value.trim(), password: p1 });
+    alert("Password reset successfully! You can now login with your new password.");
+    showLogin();
+  } catch (e) { setError("resetStep3Error", e.message || "Failed to reset password."); }
+  busy("resetBtn3", "resetStep3Loading", false);
+}
+
+/* ---------------- create password ---------------- */
+async function createNewPassword() {
+  const section = $("createSection").value;
+  const username = $("createUsername").value.trim();
+  const email = $("createEmail").value.trim();
+  const password = $("createPassword").value;
+  const confirm = $("confirmPassword").value;
+  setError("createError");
+
+  if (!section) return setError("createError", "Please select your Grade / Section.");
+  if (!username || !email || !password || !confirm) return setError("createError", "Please fill in all fields.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError("createError", "Please enter a valid email address.");
+  if (password !== confirm) return setError("createError", "Passwords do not match!");
+  if (password.length < 2) return setError("createError", "Password must be at least 2 characters long.");
+
+  busy("createBtn", "createPasswordLoading", true);
+  try {
+    await api("createPassword", { section, username, password, email });
+    alert("Password created successfully! Your email has been registered for recovery purposes.");
+    showLogin();
+  } catch (e) { setError("createError", e.message); }
+  busy("createBtn", "createPasswordLoading", false);
+}
+
+/* ---------------- login ---------------- */
+async function login() {
+  const section = $("loginSection").value;
+  const username = $("username").value.trim();
+  const password = $("password").value;
+  setError("loginError");
+  if (!section) return setError("loginError", "Please select your Grade / Section.");
+  if (!username || !password) return setError("loginError", "Please enter Student Code and Password.");
+  busy("loginBtn", "loginLoading", true);
+  try {
+    const result = await api("login", { section, username, password });
+    showResult(result);
+  } catch (e) { setError("loginError", e.message || "Login failed."); }
+  busy("loginBtn", "loginLoading", false);
+}
+
+/* =====================================================================
+   RESULT RENDERING  –  subjects = rows, one column per ON tab (INFO sheet),
+   summary (Total, Average, Rank, Remark) at the bottom
+   ===================================================================== */
+const SUMMARY = [
+  { key: "total",   label: "Total",   re: /total|sum|ድምር|ጠቅላላ/i },
+  { key: "average", label: "Average", re: /aver|avg|mean|አማካይ/i },
+  { key: "rank",    label: "Rank",    re: /rank|position|ደረጃ/i },
+  { key: "status",  label: "Remark",  re: /status|remark|ስታቱስ|ሁኔታ/i }
+];
+function classify(h) {
+  for (const k of ["rank", "status", "average", "total"]) if (SUMMARY.find(s => s.key === k).re.test(String(h || ""))) return k;
+  return null;
+}
+function isNumeric(v) { return (typeof v === "number" && isFinite(v)) || (typeof v === "string" && v.trim() !== "" && isFinite(Number(v))); }
+function round2(v) { return Math.round(Number(v) * 100) / 100; }
+function parseMax(p) { const n = parseFloat(String(p == null ? "" : p).replace("%", "")); return isFinite(n) && n > 0 ? n : null; }
+const normKey = h => String(h).trim().toLowerCase().replace(/\s+/g, " ");
+
+function makeCell(raw, pct, kind) {
+  const c = { empty: raw === undefined || raw === null || String(raw).trim() === "", numeric: false, num: null, text: "", incomplete: false, red: false };
+  if (c.empty) return c;
+  if (isNumeric(raw)) { c.numeric = true; c.num = round2(raw); c.text = String(c.num); }
+  else { c.text = String(raw).trim(); c.incomplete = INCOMPLETE_REGEX.test(c.text); }
+  const max = pct !== null ? pct : 100;
+  c.red = kind !== "rank" && kind !== "status" && c.numeric && max === 100 && c.num < PASS_MARK;
+  return c;
+}
+
+/* read one tab: subject cells by name + summary cells by type */
+function readTab(t, start) {
+  const H = t.allHeaders || [], P = t.percentages || [], R = t.studentData || [];
+  const out = { subjects: {}, order: [], labels: {}, pcts: {}, summary: {} };
+  for (let i = FIRST_MARK_COL; i < H.length; i++) {
+    const h = H[i] === undefined || H[i] === null ? "" : String(H[i]).trim();
+    if (!h) continue;
+    const kind = classify(h), pct = parseMax(P[i]);
+    if (kind) { if (!out.summary[kind]) out.summary[kind] = makeCell(R[i], pct, kind); continue; }
+    if (i < start) continue;
+    const k = normKey(h);
+    out.subjects[k] = makeCell(R[i], pct, "subject"); out.order.push(k); out.labels[k] = h; out.pcts[k] = pct;
+  }
+  return out;
+}
+
+function cellHtml(c, isStatus) {
+  if (!c) return "<td></td>";
+  if (c.empty) return isStatus ? "<td></td>" : '<td class="emp">—</td>';
+  const inner = isStatus && !c.incomplete ? `<span class="chip2">${escapeHtml(c.text)}</span>` : escapeHtml(c.text);
+  return `<td class="${c.incomplete ? "inc" : (c.red ? "red" : "")}">${inner}</td>`;
+}
+
+function generateResultHTML(result) {
+  const tabs = result.tabs || [];
+  let data = tabs.map(t => readTab(t, FIRST_SUBJECT_COL));
+  if (!data.some(d => d.order.length)) data = tabs.map(t => readTab(t, FIRST_MARK_COL));   // fallback layout
+
+  // union of subjects, in sheet order
+  const keys = [], label = {}, pct = {};
+  data.forEach(d => d.order.forEach(k => {
+    if (!(k in label)) { keys.push(k); label[k] = d.labels[k]; pct[k] = d.pcts[k]; }
+    else if (pct[k] == null && d.pcts[k] != null) pct[k] = d.pcts[k];
+  }));
+
+  const head = `<tr><th class="sub">Subject</th>${tabs.map(t => `<th title="${escapeHtml(t.title || "")}">${escapeHtml(t.sheetName)}</th>`).join("")}</tr>`;
+  const body = keys.map(k => {
+    const w = pct[k] && pct[k] !== 100 ? `<small>out of ${escapeHtml(pct[k])}</small>` : "";
+    return `<tr><td class="sub">${escapeHtml(label[k])}${w}</td>${data.map(d => cellHtml(d.subjects[k], false)).join("")}</tr>`;
+  }).join("");
+
+  const foot = SUMMARY.map(s => {
+    const cells = data.map(d => d.summary[s.key]);
+    if (cells.every(c => !c || c.empty)) return "";                 // empty row → show nothing
+    return `<tr><td class="sub">${s.label}</td>${cells.map(c => cellHtml(c, s.key === "status")).join("")}</tr>`;
+  }).join("");
+
+  const table = keys.length
+    ? `<div class="tablewrap"><table class="rt"><thead>${head}</thead><tbody>${body}</tbody>${foot ? `<tfoot>${foot}</tfoot>` : ""}</table></div>`
+    : `<div class="noresult">No results found yet.</div>`;
+
+  return `<div class="rcard">
+      <div class="who"><span class="nm">${escapeHtml(result.studentName || "Student")}</span>
+        <span class="meta"><span class="roll">${escapeHtml(result.section)}</span><span class="roll">Roll No: ${escapeHtml(result.rollNumber)}</span></span></div>
+      ${table}
+    </div>
+    <div class="actions">
+      <button class="btn" type="button" onclick="window.print()">🖨️ Print / Save PDF</button>
+      <button class="btn" type="button" onclick="showLogin()">← Back to Home</button>
+    </div>`;
+}
+
+function showResult(result) {
+  globalResult = result;
+  $("resultContainer").innerHTML = generateResultHTML(result);
+  setView("result");
+}
+</script>
+</body>
+</html>
